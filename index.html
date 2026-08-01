@@ -33,7 +33,6 @@
     <header class="w-full glass-card border-b border-slate-800 sticky top-0 z-40">
         <div class="max-w-xl mx-auto px-4 py-3 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <!-- Aapke asli logo ki file ka naam yahan set hai -->
                 <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-red-500 shadow-md bg-slate-800 flex items-center justify-center">
                     <img src="1000047642-modified.png" alt="Logo" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://via.placeholder.com/150/ef4444/ffffff?text=GBX';">
                 </div>
@@ -46,7 +45,7 @@
             </div>
             <div class="flex items-center gap-2">
                 <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                    <span class="w-1.5 h-1.5 mr-1.5 bg-emerald-400 rounded-full animate-pulse"></span> Live
+                    <span class="w-1.5 h-1.5 mr-1.5 bg-emerald-400 rounded-full animate-pulse"></span> Live DB
                 </span>
             </div>
         </div>
@@ -55,7 +54,7 @@
     <!-- Main Content Container -->
     <main class="max-w-xl w-full mx-auto px-4 py-5 flex-grow z-10">
         
-        <!-- Big Banner Image Box (Aapke asli banner ki file ka naam yahan set hai) -->
+        <!-- Big Banner Image Box -->
         <div class="w-full rounded-2xl overflow-hidden mb-6 border border-slate-700/60 shadow-xl bg-slate-800">
             <img src="Screenshot_2026-08-01-11-59-57-58_fcda2657b11af9cf0a49a9d2ac2c6d74.jpg" alt="Swiggy Buzz Banner" class="w-full h-auto object-cover aspect-[16/7]" id="bannerImg" onerror="this.onerror=null; this.src='https://via.placeholder.com/600x260/7c3aed/ffffff?text=Buzz+Your+Friends+Win+1000';">
         </div>
@@ -63,7 +62,7 @@
         <!-- Hero Input Card -->
         <div class="glass-card rounded-2xl p-4 sm:p-5 mb-6 glow-effect border border-slate-700/50">
             <h2 class="text-xl font-extrabold text-white mb-1">Paste Your Link</h2>
-            <p class="text-xs text-slate-300 mb-3">Paste your link below. It will instantly appear at the top for the community!</p>
+            <p class="text-xs text-slate-300 mb-3">Paste your link below. It will instantly appear at the top for everyone!</p>
             
             <!-- Submission Form -->
             <form id="linkForm" class="space-y-3">
@@ -71,7 +70,7 @@
                     <div class="relative">
                         <input type="url" id="linkInput" required placeholder="https://r.swiggy.com/..." 
                             class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition">
-                        <button type="submit" class="absolute right-1.5 top-1.5 bottom-1.5 bg-red-600 hover:bg-red-500 text-white font-semibold px-4 rounded-lg text-xs sm:text-sm shadow-md transition flex items-center gap-1.5">
+                        <button type="submit" id="submitBtn" class="absolute right-1.5 top-1.5 bottom-1.5 bg-red-600 hover:bg-red-500 text-white font-semibold px-4 rounded-lg text-xs sm:text-sm shadow-md transition flex items-center gap-1.5">
                             <i class="fa-solid fa-paper-plane"></i> Submit
                         </button>
                     </div>
@@ -89,9 +88,9 @@
                 <span class="text-[11px] text-slate-400">Newest on top</span>
             </div>
 
-            <!-- Links Container (LIFO - Latest First) -->
+            <!-- Links Container -->
             <div id="linksContainer" class="space-y-2.5 max-h-[450px] overflow-y-auto pr-1">
-                <!-- Dynamic links inserted here -->
+                <div class="text-center py-8 text-slate-400 text-xs">Loading live links...</div>
             </div>
         </div>
 
@@ -99,12 +98,10 @@
 
     <!-- Floating Social Media Circle Buttons -->
     <div class="fixed bottom-6 right-5 flex flex-col gap-3 z-50">
-        <!-- Telegram Circle Button -->
         <a href="https://t.me/+6ByfGDRBKgsxMjZl" target="_blank" title="Join Telegram Channel" 
            class="w-12 h-12 sm:w-14 sm:h-14 bg-sky-500 hover:bg-sky-400 text-white rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-all duration-300 border-2 border-white/20">
             <i class="fa-brands fa-telegram text-2xl sm:text-3xl"></i>
         </a>
-        <!-- WhatsApp Circle Button -->
         <a href="https://whatsapp.com/channel/0029VbC8W079cDDbwqPeE92y" target="_blank" title="Join WhatsApp Channel" 
            class="w-12 h-12 sm:w-14 sm:h-14 bg-emerald-500 hover:bg-emerald-400 text-white rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-all duration-300 border-2 border-white/20">
             <i class="fa-brands fa-whatsapp text-2xl sm:text-3xl"></i>
@@ -116,20 +113,39 @@
         &copy; 2026 GBX Swiggy Buzz. All rights reserved.
     </footer>
 
-    <!-- JavaScript -->
-    <script>
-        let links = JSON.parse(localStorage.getItem('gbx_swiggy_buzz_links')) || [];
+    <!-- Firebase & App Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
+        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBF9kK1o3wyxDbhmSU3MeMw4qAmw4DSH4A",
+            authDomain: "gbx-swiggy-buzz.firebaseapp.com",
+            projectId: "gbx-swiggy-buzz",
+            storageBucket: "gbx-swiggy-buzz.firebasestorage.app",
+            messagingSenderId: "53786379820",
+            appId: "1:53786379820:web:def7fe96f69c0dc1c3b389",
+            measurementId: "G-0HRTX365M4"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
         const linkForm = document.getElementById('linkForm');
         const linkInput = document.getElementById('linkInput');
         const linksContainer = document.getElementById('linksContainer');
         const linkCount = document.getElementById('linkCount');
+        const submitBtn = document.getElementById('submitBtn');
 
-        function renderLinks() {
+        // Realtime Data Fetching from Firebase
+        const linksRef = ref(db, 'swiggy_links');
+        
+        onValue(linksRef, (snapshot) => {
             linksContainer.innerHTML = '';
-            linkCount.textContent = links.length;
-
-            if (links.length === 0) {
+            const data = snapshot.val();
+            
+            if (!data) {
+                linkCount.textContent = '0';
                 linksContainer.innerHTML = `
                     <div class="text-center py-8 glass-card rounded-xl border border-slate-800 text-slate-400 text-xs">
                         <i class="fa-regular fa-folder-open text-xl mb-1.5 block"></i>
@@ -139,8 +155,17 @@
                 return;
             }
 
-            links.forEach((item, index) => {
-                const displayNum = links.length - index;
+            let linksArray = Object.keys(data).map(key => ({
+                id: key,
+                url: data[key].url
+            }));
+
+            linkCount.textContent = linksArray.length;
+            linksContainer.innerHTML = '';
+
+            // Reverse to show latest links on top
+            linksArray.reverse().forEach((item, index) => {
+                const displayNum = linksArray.length - index;
                 const card = document.createElement('div');
                 card.className = "glass-card p-3 rounded-xl border border-slate-800 hover:border-slate-700 transition flex items-center justify-between gap-2";
                 card.innerHTML = `
@@ -151,7 +176,7 @@
                         </a>
                     </div>
                     <div class="flex items-center gap-1.5 shrink-0">
-                        <button onclick="copyLink('${item.url}')" class="text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-lg border border-slate-700 transition">
+                        <button onclick="copyLink('${item.url}')" class="text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-lg border border-slate-700 transition" title="Copy">
                             <i class="fa-regular fa-copy"></i>
                         </button>
                         <a href="${item.url}" target="_blank" class="text-[11px] bg-red-600 hover:bg-red-500 text-white px-2.5 py-1.5 rounded-lg transition">
@@ -159,27 +184,37 @@
                         </a>
                     </div>
                 `;
-                linksContainer.prepend(card);
+                linksContainer.appendChild(card);
             });
-        }
+        });
 
+        // Submit Link to Firebase
         linkForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const urlVal = linkInput.value.trim();
             if(!urlVal) return;
 
-            links.push({ url: urlVal });
-            localStorage.setItem('gbx_swiggy_buzz_links', JSON.stringify(links));
-            linkInput.value = '';
-            renderLinks();
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+            push(linksRef, {
+                url: urlVal,
+                timestamp: Date.now()
+            }).then(() => {
+                linkInput.value = '';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit';
+            }).catch((error) => {
+                alert('Error submitting link: ' + error.message);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit';
+            });
         });
 
-        function copyLink(text) {
+        window.copyLink = function(text) {
             navigator.clipboard.writeText(text);
-            alert('Link copied!');
+            alert('Link copied to clipboard!');
         }
-
-        renderLinks();
     </script>
 </body>
 </html>
