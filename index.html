@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GBX Loot - Community Link Share & Earn</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow-effect {
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.15);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between relative">
+
+    <!-- Header -->
+    <header class="w-full glass-card border-b border-slate-800 sticky top-0 z-40">
+        <div class="max-w-xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-red-500 shadow-md bg-slate-800 flex items-center justify-center">
+                    <!-- Yahan aap apna logo image laga sakte hain -->
+                    <span class="text-red-500 font-extrabold text-sm">GBX</span>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-wide text-white flex items-center gap-1.5">
+                        GBX <span class="text-red-500">LOOT</span>
+                    </h1>
+                    <p class="text-[11px] text-slate-400">Community Streak & Offer Hub</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span class="w-1.5 h-1.5 mr-1.5 bg-emerald-400 rounded-full animate-pulse"></span> Live
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container (Fixed Ratio Width) -->
+    <main class="max-w-xl w-full mx-auto px-4 py-5 flex-grow z-10">
+        
+        <!-- Banner Image Box (Jaise ShoppingGenie mein tha) -->
+        <div class="w-full rounded-2xl overflow-hidden mb-5 border border-slate-700/60 shadow-lg bg-slate-800">
+            <img src="YOUR_BANNER_IMAGE_URL_HERE" alt="GBX Banner" class="w-full h-auto object-cover max-h-48" id="bannerImg" onerror="this.onerror=null; this.src='https://via.placeholder.com/600x200/1e293b/ef4444?text=GBX+Loot+Banner';">
+        </div>
+
+        <!-- Hero Input Card -->
+        <div class="glass-card rounded-2xl p-4 sm:p-5 mb-6 glow-effect border border-slate-700/50">
+            <h2 class="text-xl font-extrabold text-white mb-1">Paste Your Link</h2>
+            <p class="text-xs text-slate-300 mb-3">Paste your link below. It will instantly appear at the top for the community!</p>
+            
+            <!-- Submission Form -->
+            <form id="linkForm" class="space-y-3">
+                <div>
+                    <div class="relative">
+                        <input type="url" id="linkInput" required placeholder="https://r.swiggy.com/..." 
+                            class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition">
+                        <button type="submit" class="absolute right-1.5 top-1.5 bottom-1.5 bg-red-600 hover:bg-red-500 text-white font-semibold px-4 rounded-lg text-xs sm:text-sm shadow-md transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-paper-plane"></i> Submit
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Submitted Links Section -->
+        <div class="space-y-3">
+            <div class="flex items-center justify-between px-1">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-bolt text-red-500"></i> Submitted Links 
+                    <span id="linkCount" class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full border border-slate-700">0</span>
+                </h3>
+                <span class="text-[11px] text-slate-400">Newest on top</span>
+            </div>
+
+            <!-- Links Container (LIFO - Latest First) -->
+            <div id="linksContainer" class="space-y-2.5 max-h-[450px] overflow-y-auto pr-1">
+                <!-- Dynamic links inserted here -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Floating Social Media Circle Buttons (Aapke diye gaye links ke sath) -->
+    <div class="fixed bottom-6 right-5 flex flex-col gap-3 z-50">
+        <!-- Telegram Circle Button -->
+        <a href="https://t.me/+6ByfGDRBKgsxMjZl" target="_blank" title="Join Telegram Channel" 
+           class="w-12 h-12 sm:w-14 sm:h-14 bg-sky-500 hover:bg-sky-400 text-white rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-all duration-300 border-2 border-white/20">
+            <i class="fa-brands fa-telegram text-2xl sm:text-3xl"></i>
+        </a>
+        <!-- WhatsApp Circle Button -->
+        <a href="https://whatsapp.com/channel/0029VbC8W079cDDbwqPeE92y" target="_blank" title="Join WhatsApp Channel" 
+           class="w-12 h-12 sm:w-14 sm:h-14 bg-emerald-500 hover:bg-emerald-400 text-white rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-all duration-300 border-2 border-white/20">
+            <i class="fa-brands fa-whatsapp text-2xl sm:text-3xl"></i>
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs text-slate-500 border-t border-slate-800/80 mt-10">
+        &copy; 2026 GBX Loot. All rights reserved.
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        let links = JSON.parse(localStorage.getItem('gbx_loot_links')) || [];
+
+        const linkForm = document.getElementById('linkForm');
+        const linkInput = document.getElementById('linkInput');
+        const linksContainer = document.getElementById('linksContainer');
+        const linkCount = document.getElementById('linkCount');
+
+        function renderLinks() {
+            linksContainer.innerHTML = '';
+            linkCount.textContent = links.length;
+
+            if (links.length === 0) {
+                linksContainer.innerHTML = `
+                    <div class="text-center py-8 glass-card rounded-xl border border-slate-800 text-slate-400 text-xs">
+                        <i class="fa-regular fa-folder-open text-xl mb-1.5 block"></i>
+                        No links submitted yet. Be the first one!
+                    </div>
+                `;
+                return;
+            }
+
+            links.forEach((item, index) => {
+                const displayNum = links.length - index;
+                const card = document.createElement('div');
+                card.className = "glass-card p-3 rounded-xl border border-slate-800 hover:border-slate-700 transition flex items-center justify-between gap-2";
+                card.innerHTML = `
+                    <div class="flex items-center space-x-2.5 overflow-hidden">
+                        <span class="text-[11px] font-bold text-red-500 bg-red-500/10 px-1.5 py-0.5 rounded shrink-0">#${displayNum}</span>
+                        <a href="${item.url}" target="_blank" class="text-xs sm:text-sm text-slate-200 hover:text-red-400 truncate font-mono transition">
+                            ${item.url}
+                        </a>
+                    </div>
+                    <div class="flex items-center gap-1.5 shrink-0">
+                        <button onclick="copyLink('${item.url}')" class="text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-lg border border-slate-700 transition">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                        <a href="${item.url}" target="_blank" class="text-[11px] bg-red-600 hover:bg-red-500 text-white px-2.5 py-1.5 rounded-lg transition">
+                            Open
+                        </a>
+                    </div>
+                `;
+                linksContainer.prepend(card);
+            });
+        }
+
+        linkForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const urlVal = linkInput.value.trim();
+            if(!urlVal) return;
+
+            links.push({ url: urlVal });
+            localStorage.setItem('gbx_loot_links', JSON.stringify(links));
+            linkInput.value = '';
+            renderLinks();
+        });
+
+        function copyLink(text) {
+            navigator.clipboard.writeText(text);
+            alert('Link copied!');
+        }
+
+        renderLinks();
+    </script>
+</body>
+</html>
